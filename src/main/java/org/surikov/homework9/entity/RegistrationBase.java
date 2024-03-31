@@ -14,11 +14,9 @@ public class RegistrationBase {
     public static Map getMap(){
         if(map==null){
             map = new HashMap<>();
-            map.put("Admin","Admin");
-            return map;
-        } else {
-            return map;
+            map.put("admin","admin");
         }
+        return map;
     }
 
 
