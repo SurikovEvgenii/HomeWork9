@@ -1,27 +1,37 @@
 package org.surikov.homework9;
 
 import java.io.*;
+import java.util.Enumeration;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import org.surikov.homework9.entity.RegistrationBase;
 
-@WebServlet(name = "helloServlet", value = "/hello-servlet")
+@WebServlet(name = "textServlet", value = "/text-servlet")
 public class HelloServlet extends HttpServlet {
-    private String message;
+    //Решаю задачу через регулярные выражения
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-    public void init() {
-        message = "Hello World!";
-    }
+        String[] text = req.getParameter("text").split("(?<=\\.) |(?<=\\?) ");
+        String pattern = "(.\\?)";
+        Pattern regular = Pattern.compile(pattern) ;
+        int counter = 0;
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
+        for (String string: text){
 
-        // Hello
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h1>" + message + "</h1>");
-        out.println("</body></html>");
-    }
-
-    public void destroy() {
+            Matcher matcher = regular.matcher(string);
+            if(matcher.find()) {
+                counter++;
+            }
+        }
+        req.setAttribute("counter",counter);
+        req.getRequestDispatcher("index.jsp").forward(req,resp);
     }
 }
+
