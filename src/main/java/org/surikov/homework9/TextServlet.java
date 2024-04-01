@@ -18,7 +18,7 @@ public class TextServlet extends HttpServlet {
         List<String> questions = new ArrayList<>();
         //Выражение (?<=\.) позволяет увидеть на один символ вперед.
         //Это помогает сохранить символ вопроса, для дальнейшей индикации
-        String[] text = req.getParameter("text").split("(?<=\\.) |(?<=\\?) |(?<=\\?$) |(?<=\\.$) ");
+        String[] text = req.getParameter("text").split("(?<=\\.) |(?<=\\?) |(\\s)");
         //Задаем шаблон для индикации вопросительного предложения
         String pattern = "(.\\?)";
         Pattern regular = Pattern.compile(pattern) ;
