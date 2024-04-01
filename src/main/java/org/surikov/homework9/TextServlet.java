@@ -18,7 +18,7 @@ public class TextServlet extends HttpServlet {
         List<String> questions = new ArrayList<>();
         //Выражение (?<=\.) позволяет увидеть на один символ вперед.
         //Это помогает сохранить символ вопроса, для дальнейшей индикации
-        String[] text = req.getParameter("text").split("(?<=\\.) |(?<=\\?) |(\\s)");
+        String[] text = req.getParameter("text").split("(?<=\\.) |(?<=\\?) |(?<=\\r)");
         //Задаем шаблон для индикации вопросительного предложения
         String pattern = "(.\\?)";
         Pattern regular = Pattern.compile(pattern) ;
@@ -29,9 +29,8 @@ public class TextServlet extends HttpServlet {
             Matcher matcher = regular.matcher(string);
             if(matcher.find()) {
                 String name = "question_"+counter;
-                System.out.println(string);
                 //Cookie не хранят символ пробела. Меняем символ.
-                Cookie cookie = new Cookie(name,string.replace(" ","_"));
+                Cookie cookie = new Cookie(name,string.replaceAll("[,\\s]","_"));
                 resp.addCookie(cookie);
                 //Cookie записываются, все хорошо.
                 questions.add(string);
